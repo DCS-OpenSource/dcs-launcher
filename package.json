@@ -3,7 +3,7 @@
   "displayName": "DCS Launcher",
   "description": "Launch DCS missions directly from VS Code, skipping the menu. Ideal for rapid EFM development.",
   "version": "0.0.1",
-  "publisher": "your-name",
+  "publisher": "DCS-OpenSource",
   "engines": {
     "vscode": "^1.108.1"
   },
@@ -14,7 +14,8 @@
   "activationEvents": [
     "onView:dcsLauncher.missions",
     "onCommand:dcsLauncher.launchMission",
-    "onCommand:dcsLauncher.selectDcsExe"
+    "onCommand:dcsLauncher.selectDcsExe",
+    "onCommand:dcsLauncher.launchLastMission"
   ],
 
   "main": "./dist/extension.js",
@@ -47,8 +48,22 @@
       {
         "command": "dcsLauncher.selectDcsExe",
         "title": "DCS Launcher: Select DCS Executable"
+      },
+      {
+        "command": "dcsLauncher.launchLastMission",
+        "title": "DCS Launcher: Launch Last Mission"
+      }
+
+    ],
+
+    "keybindings": [
+      {
+        "command": "dcsLauncher.launchLastMission",
+        "key": "f8",
+        "when": "editorTextFocus"
       }
     ],
+
 
     "configuration": {
       "title": "DCS Launcher",

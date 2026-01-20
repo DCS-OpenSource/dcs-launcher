@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- DCS text (less bold) -->
+  <text x="12" y="9.2" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="600" letter-spacing="-1.0" fill="currentColor">
+    DCS
+  </text>
+
+  <!-- Extra-tall play button -->
+  <polygon points="7.5,11 7.5,23.5 19.5,17.25" fill="currentColor"></polygon>
+</svg>

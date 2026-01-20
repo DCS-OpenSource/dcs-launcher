@@ -3,8 +3,6 @@ import { MissionTreeProvider } from "./missionTree";
 import { launchDcs } from "./launcher";
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('DCS Launcher activated');
-
     const missionTree = new MissionTreeProvider();
 
     vscode.window.registerTreeDataProvider(
@@ -16,7 +14,23 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand(
             "dcsLauncher.launchMission",
             async (missionPath: string) => {
-                await launchDcs(missionPath);
+                await launchDcs(missionPath, context);
+            }
+        ),
+
+        vscode.commands.registerCommand(
+            "dcsLauncher.launchLastMission",
+            async () => {
+                const lastMission = context.globalState.get<string>("lastMission");
+
+                if (!lastMission) {
+                    vscode.window.showWarningMessage(
+                        "No mission has been launched yet."
+                    );
+                    return;
+                }
+
+                await launchDcs(lastMission, context);
             }
         ),
 
@@ -25,12 +39,10 @@ export function activate(context: vscode.ExtensionContext) {
             async () => {
                 const file = await vscode.window.showOpenDialog({
                     canSelectMany: false,
-                    filters: { "DCS Executable": ["exe"] }
+                    filters: { "Executable": ["exe"] }
                 });
 
-                if (!file || file.length === 0) {
-                    return;
-                }
+                if (!file) {return;}
 
                 const config = vscode.workspace.getConfiguration("dcsLauncher");
                 await config.update(
@@ -44,5 +56,3 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 }
-
-export function deactivate() {}
