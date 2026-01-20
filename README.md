@@ -1,71 +1,147 @@
-# dcs-launcher README
+# DCS Launcher
 
-This is the README for your extension "dcs-launcher". After writing up a brief description, we recommend including the following sections.
+**DCS Launcher** is a Visual Studio Code extension that lets you **launch Digital Combat Simulator (DCS) missions directly from VS Code**, bypassing the main menu.  
+It’s designed for **rapid iteration**, making it ideal for **EFM, avionics, systems, and mission development**.
 
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Launch missions with one click or a keybind — no more navigating menus between test runs.
 
 ---
 
-## Following extension guidelines
+## ✨ Features
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- 🚀 **One-click mission launch** from the VS Code Activity Bar  
+- 📂 **Per-workspace mission lists** (stored in `.vscode/settings.json`)  
+- ⚙️ **Global DCS.exe configuration** (set once, reuse everywhere)  
+- ⌨️ **Keybinding to relaunch the last mission**  
+- 🧠 Remembers the **last launched mission** across restarts  
+- 🪟 Uses native Windows process spawning (no PowerShell issues)  
+- 🎯 Perfect for rapid EFM / cockpit / systems testing  
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## 🧭 How It Works
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+1. Configure the path to `DCS.exe` once (global setting)  
+2. Add one or more `.miz` files to your workspace settings  
+3. Select a mission from the **DCS Launcher** sidebar  
+4. DCS launches **directly into the mission**, skipping the menu  
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
-## For more information
+## ⚙️ Requirements
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- **Windows**
+- **DCS World installed**
+- Visual Studio Code **v1.108.0 or newer**
 
-**Enjoy!**
+> Recommended: use the **bin-mt** version of DCS for multithreaded builds.
+
+---
+
+## 🛠 Extension Settings
+
+This extension contributes the following settings:
+
+### Global (User Settings)
+
+- **`dcsLauncher.dcsExePath`**  
+  Full path to `DCS.exe`  
+
+```json
+"dcsLauncher.dcsExePath": "C:\\Program Files\\Eagle Dynamics\\DCS World\\bin-mt\\DCS.exe"
+```
+
+### Workspace (Per Project)
+
+- **`dcsLauncher.missions`**  
+  List of mission files to show in the launcher  
+
+```json
+"dcsLauncher.missions": [
+  "Missions/weapon_test.miz",
+  "Missions/night_run.miz",
+  "C:/Users/you/Saved Games/DCS/Missions/debug.miz"
+]
+```
+
+Relative paths are resolved from the workspace root.
+
+---
+
+## ⌨️ Keybindings
+
+### Default Keybinding
+
+- **Launch Last Mission**
+```
+Ctrl + Alt + D
+```
+
+This instantly relaunches the **most recently launched mission**, perfect for tight edit-test cycles.
+
+You can rebind this in:
+
+```
+File → Preferences → Keyboard Shortcuts
+```
+
+Search for **“DCS Launcher”**.
+
+---
+
+## 📌 Commands
+
+- **DCS Launcher: Launch Mission**
+- **DCS Launcher: Launch Last Mission**
+- **DCS Launcher: Select DCS Executable**
+
+All commands are available from the Command Palette.
+
+---
+
+## 🧪 Known Issues
+
+- Windows only (by design)
+- Does not currently detect if DCS is already running
+- No mission add/remove UI yet (missions are managed via settings)
+
+---
+
+## 🗺️ Roadmap
+
+Planned improvements:
+
+- ➕ Add missions via file picker  
+- 🔄 Refresh button in mission list  
+- ▶️ Play / Stop toggle (detect running DCS)  
+- ⚙️ Per-mission launch flags  
+- 🧠 Auto-detect DCS installs  
+- 🧩 MT / ST selection toggle  
+
+---
+
+## 📦 Release Notes
+
+### 0.1.0
+- Initial functional release  
+- Sidebar launcher  
+- Mission list per workspace  
+- Global DCS path  
+- Keybinding for last mission  
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and bug reports are welcome.  
+This extension was built to support **real-world DCS development workflows**, so feedback from other developers is highly valued.
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+**Happy flying — and happy debugging.** ✈️
