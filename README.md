@@ -74,7 +74,7 @@ Relative paths are resolved from the workspace root.
 
 - **Launch Last Mission**
 ```
-Ctrl + Alt + D
+F8
 ```
 
 This instantly relaunches the **most recently launched mission**, perfect for tight edit-test cycles.
@@ -101,7 +101,6 @@ All commands are available from the Command Palette.
 
 ## 🧪 Known Issues
 
-- Windows only (by design)
 - Does not currently detect if DCS is already running
 - No mission add/remove UI yet (missions are managed via settings)
 
@@ -114,9 +113,6 @@ Planned improvements:
 - ➕ Add missions via file picker  
 - 🔄 Refresh button in mission list  
 - ▶️ Play / Stop toggle (detect running DCS)  
-- ⚙️ Per-mission launch flags  
-- 🧠 Auto-detect DCS installs  
-- 🧩 MT / ST selection toggle  
 
 ---
 
