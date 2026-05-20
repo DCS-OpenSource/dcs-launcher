@@ -11,6 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
+
         vscode.commands.registerCommand(
             "dcsLauncher.launchMission",
             async (missionPath: string) => {
@@ -19,39 +20,38 @@ export function activate(context: vscode.ExtensionContext) {
         ),
 
         vscode.commands.registerCommand(
-            "dcsLauncher.launchLastMission",
+            "dcsLauncher.addMission",
             async () => {
-                const lastMission = context.globalState.get<string>("lastMission");
 
-                if (!lastMission) {
-                    vscode.window.showWarningMessage(
-                        "No mission has been launched yet."
-                    );
-                    return;
-                }
-
-                await launchDcs(lastMission, context);
-            }
-        ),
-
-        vscode.commands.registerCommand(
-            "dcsLauncher.selectDcsExe",
-            async () => {
-                const file = await vscode.window.showOpenDialog({
-                    canSelectMany: false,
-                    filters: { "Executable": ["exe"] }
+                const files = await vscode.window.showOpenDialog({
+                    canSelectMany: true,
+                    filters: { "DCS Mission": ["miz"] }
                 });
 
-                if (!file) {return;}
+                if (!files) {return;};
 
                 const config = vscode.workspace.getConfiguration("dcsLauncher");
+                const existing = config.get<string[]>("missions") ?? [];
+
+                const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+
+                const newMissions = files.map(file => {
+                    if (workspaceFolder) {
+                        const relative = vscode.workspace.asRelativePath(file);
+                        return relative;
+                    }
+                    return file.fsPath;
+                });
+
+                const updated = [...existing, ...newMissions];
+
                 await config.update(
-                    "dcsExePath",
-                    file[0].fsPath,
-                    vscode.ConfigurationTarget.Global
+                    "missions",
+                    updated,
+                    vscode.ConfigurationTarget.Workspace
                 );
 
-                vscode.window.showInformationMessage("DCS.exe path set.");
+                missionTree.refresh(); // 🔄 LIVE UPDATE
             }
         )
     );

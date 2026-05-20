@@ -14,8 +14,9 @@
   "activationEvents": [
     "onView:dcsLauncher.missions",
     "onCommand:dcsLauncher.launchMission",
+    "onCommand:dcsLauncher.launchLastMission",
     "onCommand:dcsLauncher.selectDcsExe",
-    "onCommand:dcsLauncher.launchLastMission"
+    "onCommand:dcsLauncher.addMission"
   ],
 
   "main": "./dist/extension.js",
@@ -27,6 +28,16 @@
           "id": "dcsLauncher",
           "title": "DCS Launcher",
           "icon": "media/dcs.svg"
+        }
+      ]
+    },
+
+    "menus": {
+      "view/title": [
+        {
+          "command": "dcsLauncher.addMission",
+          "when": "view == dcsLauncher.missions",
+          "group": "navigation"
         }
       ]
     },
@@ -52,6 +63,10 @@
       {
         "command": "dcsLauncher.launchLastMission",
         "title": "DCS Launcher: Launch Last Mission"
+      },
+      {
+        "command": "dcsLauncher.addMission",
+        "title": "DCS Launcher: Add Mission"
       }
 
     ],
