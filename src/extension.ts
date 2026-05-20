@@ -1,14 +1,32 @@
 import * as vscode from "vscode";
 import { MissionTreeProvider } from "./missionTree";
-import { launchDcs } from "./launcher";
+import { launchDcs, killDcs } from "./launcher";
+import { ControlsView } from "./controlsView";
+import { launchDcsStandalone } from "./launcher";
 
 export function activate(context: vscode.ExtensionContext) {
+    const controlsProvider = new ControlsView(context.extensionUri);
+
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            ControlsView.viewType,
+            controlsProvider
+        )
+    );
+    
     const missionTree = new MissionTreeProvider();
 
     vscode.window.registerTreeDataProvider(
         "dcsLauncher.missions",
         missionTree
     );
+
+    vscode.commands.registerCommand(
+        "dcsLauncher.launchStandalone",
+        () => {
+            launchDcsStandalone();
+        }
+    ),
 
     context.subscriptions.push(
 
@@ -52,6 +70,13 @@ export function activate(context: vscode.ExtensionContext) {
                 );
 
                 missionTree.refresh(); // 🔄 LIVE UPDATE
+            }
+        ),
+
+        vscode.commands.registerCommand(
+            "dcsLauncher.killDcs",
+            () => {
+                killDcs();
             }
         )
     );
