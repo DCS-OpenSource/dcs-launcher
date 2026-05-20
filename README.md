@@ -1,83 +1,89 @@
 # DCS Launcher
 
-**DCS Launcher** is a Visual Studio Code extension that lets you **launch Digital Combat Simulator (DCS) missions directly from VS Code**, bypassing the main menu.  
-It’s designed for **rapid iteration**, making it ideal for **EFM, avionics, systems, and mission development**.
+**DCS Launcher** is a Visual Studio Code extension that allows you to launch and control Digital Combat Simulator (DCS) directly from within VS Code.
 
-Launch missions with one click or a keybind — no more navigating menus between test runs.
+Designed for rapid development workflows, it eliminates menu navigation and speeds up testing for:
+
+- EFM development  
+- Cockpit systems  
+- Avionics  
+- Mission scripting  
+- Lua debugging  
+- Mod development  
 
 ---
 
 ## ✨ Features
 
-- 🚀 **One-click mission launch** from the VS Code Activity Bar  
-- 📂 **Per-workspace mission lists** (stored in `.vscode/settings.json`)  
-- ⚙️ **Global DCS.exe configuration** (set once, reuse everywhere)  
-- ⌨️ **Keybinding to relaunch the last mission**  
-- 🧠 Remembers the **last launched mission** across restarts  
-- 🪟 Uses native Windows process spawning (no PowerShell issues)  
-- 🎯 Perfect for rapid EFM / cockpit / systems testing  
+### 🟢 Launch DCS
+Launch DCS normally using your configured executable path.
 
----
+### 🔴 Kill DCS
+Terminate all running DCS instances instantly (uses native Windows process termination).
 
-## 🧭 How It Works
+### 📂 Mission Launcher
+- Add `.miz` files via GUI file picker
+- Launch missions directly with command line arguments
+- Live refresh (no VS Code restart required)
+- Mission list stored per workspace
+- Clean mission name display (filename only)
+- Full path available via tooltip
 
-1. Configure the path to `DCS.exe` once (global setting)  
-2. Add one or more `.miz` files to your workspace settings  
-3. Select a mission from the **DCS Launcher** sidebar  
-4. DCS launches **directly into the mission**, skipping the menu  
+### ⌨️ Relaunch Last Mission
+Quickly relaunch the most recently launched mission using a keybind.
 
 ---
 
 ## ⚙️ Requirements
 
-- **Windows**
-- **DCS World installed**
-- Visual Studio Code **v1.108.0 or newer**
+- Windows  
+- DCS World installed  
+- Visual Studio Code 1.108.0+  
 
-> Recommended: use the **bin-mt** version of DCS for multithreaded builds.
+Recommended: use `bin-mt` (multithreaded build).
 
 ---
 
 ## 🛠 Extension Settings
 
-This extension contributes the following settings:
-
 ### Global (User Settings)
 
-- **`dcsLauncher.dcsExePath`**  
-  Full path to `DCS.exe`  
+`dcsLauncher.dcsExePath`
+
+Full path to your DCS executable:
 
 ```json
-"dcsLauncher.dcsExePath": "C:\\Program Files\\Eagle Dynamics\\DCS World\\bin-mt\\DCS.exe"
+"dcsLauncher.dcsExePath": "C:\Program Files\Eagle Dynamics\DCS World\bin-mt\DCS.exe"
 ```
+
+---
 
 ### Workspace (Per Project)
 
-- **`dcsLauncher.missions`**  
-  List of mission files to show in the launcher  
+`dcsLauncher.missions`
+
+List of missions to show in the launcher:
 
 ```json
 "dcsLauncher.missions": [
   "Missions/weapon_test.miz",
-  "Missions/night_run.miz",
-  "C:/Users/you/Saved Games/DCS/Missions/debug.miz"
+  "Missions/night_run.miz"
 ]
 ```
 
-Relative paths are resolved from the workspace root.
+Relative paths are resolved from workspace root.
 
 ---
 
 ## ⌨️ Keybindings
 
-### Default Keybinding
+Default:
 
-- **Launch Last Mission**
 ```
 F8
 ```
 
-This instantly relaunches the **most recently launched mission**, perfect for tight edit-test cycles.
+Launches the last mission that was run.
 
 You can rebind this in:
 
@@ -85,24 +91,24 @@ You can rebind this in:
 File → Preferences → Keyboard Shortcuts
 ```
 
-Search for **“DCS Launcher”**.
+Search for “DCS Launcher”.
 
 ---
 
-## 📌 Commands
+## 🚀 Workflow
 
-- **DCS Launcher: Launch Mission**
-- **DCS Launcher: Launch Last Mission**
-- **DCS Launcher: Select DCS Executable**
+Typical development cycle:
 
-All commands are available from the Command Palette.
+1. Modify Lua / C++ / assets  
+2. Press keybind or click mission  
+3. DCS launches instantly  
+4. Test  
+5. Kill DCS  
+6. Repeat  
 
----
-
-## 🧪 Known Issues
-
-- Does not currently detect if DCS is already running
-- No mission add/remove UI yet (missions are managed via settings)
+No main menu.  
+No manual navigation.  
+No wasted time.
 
 ---
 
@@ -110,34 +116,34 @@ All commands are available from the Command Palette.
 
 Planned improvements:
 
-- ➕ Add missions via file picker  
-- 🔄 Refresh button in mission list  
-- ▶️ Play / Stop toggle (detect running DCS)  
+- Running-state detection  
+- Launch / Restart toggle  
+- Status indicator  
+- Mission sorting  
+- Drag-to-reorder missions  
 
 ---
 
 ## 📦 Release Notes
 
-### 0.1.0
-- Initial functional release  
-- Sidebar launcher  
-- Mission list per workspace  
-- Global DCS path  
-- Keybinding for last mission  
+### 1.0.0
+- Added green Launch DCS button  
+- Added red Kill DCS button  
+- Split Controls and Missions panels  
+- Added GUI mission picker  
+- Live mission refresh (no restart required)  
+- Improved mission name display  
+- Removed duplicate toolbar buttons  
+- Improved process handling 
 
 ---
 
-## 🤝 Contributing
+## 💬 Feedback
 
-Contributions, suggestions, and bug reports are welcome.  
-This extension was built to support **real-world DCS development workflows**, so feedback from other developers is highly valued.
+Feature requests and improvements are welcome.
 
 ---
 
 ## 📄 License
 
 MIT
-
----
-
-**Happy flying — and happy debugging.** ✈️
