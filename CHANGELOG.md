@@ -1,3 +1,6 @@
+## [1.1.0] - 2026-05-29
+- Added blue multicrew test second client button
+
 ## [1.0.0] - 2026-05-20
 
 ### Added

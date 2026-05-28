@@ -20,6 +20,10 @@ export class ControlsView implements vscode.WebviewViewProvider {
                     vscode.commands.executeCommand("dcsLauncher.launchStandalone");
                     break;
 
+                case "launchMulticrew":
+                    vscode.commands.executeCommand("dcsLauncher.launchMulticrew");
+                    break;
+
                 case "kill":
                     vscode.commands.executeCommand("dcsLauncher.killDcs");
                     break;
@@ -53,6 +57,22 @@ export class ControlsView implements vscode.WebviewViewProvider {
                 Launch DCS
             </button>
 
+            <button id="launchMulticrew"
+                style="
+                    width: 100%;
+                    padding: 6px 8px;
+                    background-color: #2563eb;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    margin-bottom: 6px;
+                ">
+                Launch Multicrew Test Client
+            </button>
+
             <button id="kill"
                 style="
                     width: 100%;
@@ -73,6 +93,10 @@ export class ControlsView implements vscode.WebviewViewProvider {
 
                 document.getElementById("launch").addEventListener("click", () => {
                     vscode.postMessage({ command: "launch" });
+                });
+
+                document.getElementById("launchMulticrew").addEventListener("click", () => {
+                    vscode.postMessage({ command: "launchMulticrew" });
                 });
 
                 document.getElementById("kill").addEventListener("click", () => {

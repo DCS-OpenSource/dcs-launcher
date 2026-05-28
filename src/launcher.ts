@@ -66,6 +66,24 @@ export async function launchDcsStandalone() {
     vscode.window.showInformationMessage("DCS launched.");
 }
 
+export async function launchDcsMulticrew() {
+
+    const config = vscode.workspace.getConfiguration("dcsLauncher");
+    const dcsExePath = config.get<string>("dcsExePath");
+
+    if (!dcsExePath || !fs.existsSync(dcsExePath)) {
+        vscode.window.showErrorMessage("Valid DCS.exe path is not set.");
+        return;
+    }
+
+    spawn(dcsExePath, ["-w", "DCS.multicrew"], {
+        detached: true,
+        windowsHide: false
+    });
+
+    vscode.window.showInformationMessage("DCS multicrew launched.");
+}
+
 export function killDcs() {
     const killer = spawn("taskkill", [
         "/IM",

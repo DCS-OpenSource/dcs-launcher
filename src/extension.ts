@@ -1,8 +1,12 @@
 import * as vscode from "vscode";
 import { MissionTreeProvider } from "./missionTree";
-import { launchDcs, killDcs } from "./launcher";
+import {
+    launchDcs,
+    killDcs,
+    launchDcsStandalone,
+    launchDcsMulticrew
+} from "./launcher";
 import { ControlsView } from "./controlsView";
-import { launchDcsStandalone } from "./launcher";
 
 export function activate(context: vscode.ExtensionContext) {
     const controlsProvider = new ControlsView(context.extensionUri);
@@ -21,14 +25,21 @@ export function activate(context: vscode.ExtensionContext) {
         missionTree
     );
 
-    vscode.commands.registerCommand(
-        "dcsLauncher.launchStandalone",
-        () => {
-            launchDcsStandalone();
-        }
-    ),
-
     context.subscriptions.push(
+
+        vscode.commands.registerCommand(
+            "dcsLauncher.launchStandalone",
+            () => {
+                launchDcsStandalone();
+            }
+        ),
+
+        vscode.commands.registerCommand(
+            "dcsLauncher.launchMulticrew",
+            () => {
+                launchDcsMulticrew();
+            }
+        ),
 
         vscode.commands.registerCommand(
             "dcsLauncher.launchMission",
