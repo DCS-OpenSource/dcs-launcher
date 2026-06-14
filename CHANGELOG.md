@@ -1,3 +1,9 @@
+## [1.2.0] - 2026-06-15
+- Added first-run DCS executable path setup flow
+- Added ModelViewer executable path setup and launch button
+- Added Models tree for `.edm` and `.lods` files
+- Added ModelViewer file launch with reload/single-file arguments
+
 ## [1.1.0] - 2026-05-29
 - Added blue multicrew test second client button
 

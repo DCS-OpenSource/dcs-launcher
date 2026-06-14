@@ -2,21 +2,30 @@
   "name": "dcs-launcher",
   "displayName": "DCS Launcher",
   "description": "Launch DCS missions directly from VS Code, skipping the menu. Ideal for rapid EFM development.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "DCS-OpenSource",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DCS-OpenSource/dcs-launcher.git"
+  },
   "engines": {
     "vscode": "^1.108.1"
   },
   "categories": [
     "Other"
   ],
-
   "activationEvents": [
     "onView:dcsLauncher.missions",
+    "onView:dcsLauncher.models",
     "onCommand:dcsLauncher.launchMission",
+    "onCommand:dcsLauncher.launchModelViewerFile",
     "onCommand:dcsLauncher.launchLastMission",
     "onCommand:dcsLauncher.launchMulticrew",
     "onCommand:dcsLauncher.selectDcsExe",
+    "onCommand:dcsLauncher.selectModelViewerExe",
+    "onCommand:dcsLauncher.launchModelViewer",
+    "onCommand:dcsLauncher.addModel",
     "onCommand:dcsLauncher.addMission"
   ],
 
@@ -43,6 +52,10 @@
         {
           "id": "dcsLauncher.missions",
           "name": "Missions"
+        },
+        {
+          "id": "dcsLauncher.models",
+          "name": "Models"
         }
       ]
     },
@@ -53,8 +66,20 @@
         "title": "DCS Launcher: Launch Mission"
       },
       {
+        "command": "dcsLauncher.launchModelViewerFile",
+        "title": "DCS Launcher: Launch ModelViewer File"
+      },
+      {
         "command": "dcsLauncher.selectDcsExe",
         "title": "DCS Launcher: Select DCS Executable"
+      },
+      {
+        "command": "dcsLauncher.selectModelViewerExe",
+        "title": "DCS Launcher: Select ModelViewer Executable"
+      },
+      {
+        "command": "dcsLauncher.launchModelViewer",
+        "title": "DCS Launcher: Launch ModelViewer"
       },
       {
         "command": "dcsLauncher.launchLastMission",
@@ -67,6 +92,10 @@
       {
         "command": "dcsLauncher.addMission",
         "title": "DCS Launcher: Add Mission"
+      },
+      {
+        "command": "dcsLauncher.addModel",
+        "title": "DCS Launcher: Add .edm / .lods"
       },
       {
         "command": "dcsLauncher.killDcs",
@@ -94,6 +123,12 @@
           "description": "Full path to DCS.exe (bin-mt recommended)",
           "scope": "application"
         },
+        "dcsLauncher.modelViewerExePath": {
+          "type": "string",
+          "default": "",
+          "description": "Full path to modelviewer2.exe",
+          "scope": "application"
+        },
         "dcsLauncher.missions": {
           "type": "array",
           "items": {
@@ -101,6 +136,15 @@
           },
           "default": [],
           "description": "List of DCS mission files (.miz) for this workspace",
+          "scope": "resource"
+        },
+        "dcsLauncher.models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "List of DCS model files (.edm and .lods) for this workspace",
           "scope": "resource"
         }
       }

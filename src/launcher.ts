@@ -84,6 +84,54 @@ export async function launchDcsMulticrew() {
     vscode.window.showInformationMessage("DCS multicrew launched.");
 }
 
+export async function launchModelViewer() {
+
+    const config = vscode.workspace.getConfiguration("dcsLauncher");
+    const modelViewerExePath = config.get<string>("modelViewerExePath");
+
+    if (!modelViewerExePath || !fs.existsSync(modelViewerExePath)) {
+        vscode.window.showErrorMessage("Valid modelviewer2.exe path is not set.");
+        return;
+    }
+
+    spawn(modelViewerExePath, [], {
+        detached: true,
+        windowsHide: false
+    });
+
+    vscode.window.showInformationMessage("ModelViewer launched.");
+}
+
+export async function launchModelViewerFile(modelPath: string) {
+
+    const config = vscode.workspace.getConfiguration("dcsLauncher");
+    const modelViewerExePath = config.get<string>("modelViewerExePath");
+
+    if (!modelViewerExePath || !fs.existsSync(modelViewerExePath)) {
+        vscode.window.showErrorMessage("Valid modelviewer2.exe path is not set.");
+        return;
+    }
+
+    let resolvedModel = modelPath;
+    const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+
+    if (!path.isAbsolute(modelPath) && workspaceFolder) {
+        resolvedModel = path.join(workspaceFolder.uri.fsPath, modelPath);
+    }
+
+    if (!fs.existsSync(resolvedModel)) {
+        vscode.window.showErrorMessage(`Model file not found:\n${resolvedModel}`);
+        return;
+    }
+
+    spawn(modelViewerExePath, ["--reload", "--single", "s", resolvedModel], {
+        detached: true,
+        windowsHide: false
+    });
+
+    vscode.window.showInformationMessage("ModelViewer launched.");
+}
+
 export function killDcs() {
     const killer = spawn("taskkill", [
         "/IM",

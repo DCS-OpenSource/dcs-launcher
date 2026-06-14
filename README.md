@@ -1,68 +1,69 @@
 # DCS Launcher
 
-**DCS Launcher** is a Visual Studio Code extension that allows you to launch and control Digital Combat Simulator (DCS) directly from within VS Code.
+DCS Launcher is a Visual Studio Code extension for launching DCS World, DCS missions, and ModelViewer directly from the VS Code sidebar.
 
-Designed for rapid development workflows, it eliminates menu navigation and speeds up testing for:
+It is built for rapid DCS module development workflows where repeatedly opening menus, selecting missions, or manually starting tools slows down iteration.
 
-- EFM development  
-- Cockpit systems  
-- Avionics  
-- Mission scripting  
-- Lua debugging  
-- Mod development  
+## Features
 
----
+### DCS Controls
 
-## ✨ Features
+- Select and store the path to `DCS.exe`
+- Launch DCS directly from the Controls panel
+- Launch a multicrew test client
+- Kill running DCS instances from VS Code
+- Hide launch controls until a valid DCS executable is configured
 
-### 🟢 Launch DCS
-Launch DCS normally using your configured executable path.
+### Mission Launcher
 
-### 🔴 Kill DCS
-Terminate all running DCS instances instantly (uses native Windows process termination).
+- Add `.miz` mission files through a file picker
+- Store mission lists per workspace
+- Show clean filenames in the sidebar
+- Show full mission paths in tooltips
+- Launch missions directly with DCS command line arguments
 
-### 📂 Mission Launcher
-- Add `.miz` files via GUI file picker
-- Launch missions directly with command line arguments
-- Live refresh (no VS Code restart required)
-- Mission list stored per workspace
-- Clean mission name display (filename only)
-- Full path available via tooltip
+### ModelViewer
 
-### ⌨️ Relaunch Last Mission
-Quickly relaunch the most recently launched mission using a keybind.
+- Select and store the path to `modelviewer2.exe`
+- Launch ModelViewer directly from the Controls panel
+- Add `.edm` and `.lods` files through a file picker
+- Store model lists per workspace
+- Launch selected model files in ModelViewer with reload arguments
 
----
+## Requirements
 
-## ⚙️ Requirements
+- Windows
+- Visual Studio Code 1.108.1 or newer
+- DCS World installed
+- Optional: DCS ModelViewer installed
 
-- Windows  
-- DCS World installed  
-- Visual Studio Code 1.108.0+  
+For DCS, the multithreaded executable under `bin-mt` is recommended.
 
-Recommended: use `bin-mt` (multithreaded build).
+## Extension Settings
 
----
-
-## 🛠 Extension Settings
-
-### Global (User Settings)
+### Global Settings
 
 `dcsLauncher.dcsExePath`
 
-Full path to your DCS executable:
+Full path to `DCS.exe`.
 
 ```json
-"dcsLauncher.dcsExePath": "C:\Program Files\Eagle Dynamics\DCS World\bin-mt\DCS.exe"
+"dcsLauncher.dcsExePath": "C:\\Program Files\\Eagle Dynamics\\DCS World\\bin-mt\\DCS.exe"
 ```
 
----
+`dcsLauncher.modelViewerExePath`
 
-### Workspace (Per Project)
+Full path to `modelviewer2.exe`.
+
+```json
+"dcsLauncher.modelViewerExePath": "C:\\Program Files\\Eagle Dynamics\\DCS World\\bin\\modelviewer2.exe"
+```
+
+### Workspace Settings
 
 `dcsLauncher.missions`
 
-List of missions to show in the launcher:
+List of mission files shown in the Missions tree.
 
 ```json
 "dcsLauncher.missions": [
@@ -71,79 +72,52 @@ List of missions to show in the launcher:
 ]
 ```
 
-Relative paths are resolved from workspace root.
+`dcsLauncher.models`
 
----
+List of `.edm` and `.lods` files shown in the Models tree.
 
-## ⌨️ Keybindings
-
-Default:
-
+```json
+"dcsLauncher.models": [
+  "Shapes/example.edm",
+  "Shapes/example.lods"
+]
 ```
+
+Relative paths are resolved from the workspace root.
+
+## Keybinding
+
+The default keybinding is:
+
+```text
 F8
 ```
 
-Launches the last mission that was run.
+This launches the last mission that was run.
 
-You can rebind this in:
+You can change it in VS Code Keyboard Shortcuts by searching for `DCS Launcher`.
 
-```
-File → Preferences → Keyboard Shortcuts
-```
+## Typical Workflow
 
-Search for “DCS Launcher”.
+1. Configure the path to `DCS.exe`.
+2. Add workspace mission files.
+3. Click a mission or press the keybinding to launch DCS.
+4. Test your module changes.
+5. Kill DCS from the Controls panel.
+6. Repeat.
 
----
+For model work:
 
-## 🚀 Workflow
+1. Configure the path to `modelviewer2.exe`.
+2. Add `.edm` or `.lods` files to the Models tree.
+3. Click a model file to launch it in ModelViewer.
 
-Typical development cycle:
+## Repository
 
-1. Modify Lua / C++ / assets  
-2. Press keybind or click mission  
-3. DCS launches instantly  
-4. Test  
-5. Kill DCS  
-6. Repeat  
+Source code is available at:
 
-No main menu.  
-No manual navigation.  
-No wasted time.
+https://github.com/DCS-OpenSource/dcs-launcher
 
----
-
-## 🗺️ Roadmap
-
-Planned improvements:
-
-- Running-state detection  
-- Launch / Restart toggle  
-- Status indicator  
-- Mission sorting  
-- Drag-to-reorder missions  
-
----
-
-## 📦 Release Notes
-
-### 1.0.0
-- Added green Launch DCS button  
-- Added red Kill DCS button  
-- Split Controls and Missions panels  
-- Added GUI mission picker  
-- Live mission refresh (no restart required)  
-- Improved mission name display  
-- Removed duplicate toolbar buttons  
-- Improved process handling 
-
----
-
-## 💬 Feedback
-
-Feature requests and improvements are welcome.
-
----
-
-## 📄 License
+## License
 
 MIT
