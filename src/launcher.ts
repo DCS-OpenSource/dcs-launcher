@@ -58,7 +58,7 @@ export async function launchDcsStandalone() {
         return;
     }
 
-    spawn(dcsExePath, [], {
+    spawn(dcsExePath, ["--no-launcher"], {
         detached: true,
         windowsHide: false
     });
@@ -76,7 +76,7 @@ export async function launchDcsMulticrew() {
         return;
     }
 
-    spawn(dcsExePath, ["-w", "DCS.multicrew"], {
+    spawn(dcsExePath, ["-w", "DCS.multicrew", "--no-launcher"], {
         detached: true,
         windowsHide: false
     });

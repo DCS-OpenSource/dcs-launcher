@@ -1,3 +1,6 @@
+## [1.3.0] - 2026-09-09
+- Added "--no-launcher" command line arg to all DCS startup buttons
+
 ## [1.2.0] - 2026-06-15
 - Added first-run DCS executable path setup flow
 - Added ModelViewer executable path setup and launch button
