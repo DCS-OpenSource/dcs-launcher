@@ -42,6 +42,10 @@ export class ControlsView implements vscode.WebviewViewProvider {
                 case "launchModelViewer":
                     vscode.commands.executeCommand("dcsLauncher.launchModelViewer");
                     break;
+
+                case "openLog":
+                    vscode.commands.executeCommand("dcsLauncher.openLog");
+                    break;
             }
         });
     }
@@ -167,6 +171,22 @@ export class ControlsView implements vscode.WebviewViewProvider {
                 </button>
             `}
 
+            <button id="openLog"
+                style="
+                    width: 100%;
+                    padding: 6px 8px;
+                    margin-top: 6px;
+                    background-color: #7c3aed;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                ">
+                Open DCS Log
+            </button>
+
             <script>
                 const vscode = acquireVsCodeApi();
 
@@ -192,6 +212,10 @@ export class ControlsView implements vscode.WebviewViewProvider {
 
                 document.getElementById("launchModelViewer")?.addEventListener("click", () => {
                     vscode.postMessage({ command: "launchModelViewer" });
+                });
+
+                document.getElementById("openLog")?.addEventListener("click", () => {
+                    vscode.postMessage({ command: "openLog" });
                 });
             </script>
 

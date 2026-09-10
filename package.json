@@ -26,7 +26,8 @@
     "onCommand:dcsLauncher.selectModelViewerExe",
     "onCommand:dcsLauncher.launchModelViewer",
     "onCommand:dcsLauncher.addModel",
-    "onCommand:dcsLauncher.addMission"
+    "onCommand:dcsLauncher.addMission",
+    "onCommand:dcsLauncher.openLog"
   ],
 
   "main": "./dist/extension.js",
@@ -101,6 +102,10 @@
         "command": "dcsLauncher.killDcs",
         "title": "DCS Launcher: Kill DCS",
         "icon": "$(debug-stop)"
+      },
+      {
+        "command": "dcsLauncher.openLog",
+        "title": "DCS Launcher: Open DCS Log"
       }
 
     ],
@@ -146,6 +151,17 @@
           "default": [],
           "description": "List of DCS model files (.edm and .lods) for this workspace",
           "scope": "resource"
+        },
+        "dcsLauncher.logExcludedPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "negative (drag|weight) of payload"
+          ],
+          "description": "Case-insensitive regular expressions hidden by the DCS Log viewer when Hide Ignored is enabled.",
+          "scope": "application"
         }
       }
     }

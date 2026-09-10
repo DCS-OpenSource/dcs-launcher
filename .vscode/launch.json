@@ -10,6 +10,7 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
+      "preLaunchTask": "npm: compile",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
@@ -19,4 +20,3 @@
     }
   ]
 }
-
