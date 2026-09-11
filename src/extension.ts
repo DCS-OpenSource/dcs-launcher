@@ -11,9 +11,11 @@ import {
     launchModelViewerFile
 } from "./launcher";
 import { ControlsView } from "./controlsView";
+import { DcsLogView } from "./dcsLogView";
 
 export function activate(context: vscode.ExtensionContext) {
     const controlsProvider = new ControlsView(context.extensionUri);
+    const logView = new DcsLogView();
 
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(
@@ -27,6 +29,10 @@ export function activate(context: vscode.ExtensionContext) {
                 event.affectsConfiguration("dcsLauncher.modelViewerExePath")
             ) {
                 controlsProvider.refresh();
+            }
+
+            if (event.affectsConfiguration("dcsLauncher.logExcludedPatterns")) {
+                logView.refreshConfiguration();
             }
         })
     );
@@ -119,6 +125,14 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
     context.subscriptions.push(
+        logView,
+
+        vscode.commands.registerCommand(
+            "dcsLauncher.openLog",
+            () => {
+                logView.show();
+            }
+        ),
 
         vscode.commands.registerCommand(
             "dcsLauncher.launchStandalone",

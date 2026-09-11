@@ -1,3 +1,8 @@
+## Unreleased
+- Added a live, searchable DCS log viewer in the editor area
+- Added multiline log entry handling, minimum severity filters, and a scripting source filter
+- Added configurable ignored log patterns with negative payload noise suppressed by default
+
 ## [1.3.0] - 2026-09-09
 - Added "--no-launcher" command line arg to all DCS startup buttons
 

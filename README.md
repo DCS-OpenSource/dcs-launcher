@@ -30,6 +30,12 @@ It is built for rapid DCS module development workflows where repeatedly opening 
 - Store model lists per workspace
 - Launch selected model files in ModelViewer with reload arguments
 
+### Live DCS Log
+
+- Open `Saved Games/DCS/Logs/dcs.log` in a dedicated editor tab
+- Follow new log lines automatically
+- Filter lines using text, regular expressions, and case-sensitive matching
+
 ## Requirements
 
 - Windows
@@ -85,6 +91,13 @@ List of `.edm` and `.lods` files shown in the Models tree.
 
 Relative paths are resolved from the workspace root.
 
+`dcsLauncher.logExcludedPatterns`
+
+Case-insensitive regular expressions hidden by the live log viewer when
+**Hide ignored** is enabled. The default suppresses DCS's recurring negative
+payload drag and weight errors. Use the gear button in the viewer to edit the
+list in VS Code Settings.
+
 ## Keybinding
 
 The default keybinding is:
@@ -111,6 +124,36 @@ For model work:
 1. Configure the path to `modelviewer2.exe`.
 2. Add `.edm` or `.lods` files to the Models tree.
 3. Click a model file to launch it in ModelViewer.
+
+## Development
+
+Install dependencies and verify the extension build:
+
+```text
+npm ci
+npm run compile
+```
+
+Open this repository in VS Code and press `F5` to compile the extension and open
+an Extension Development Host window. Use the DCS icon in that window's
+activity bar to exercise the development version. Set breakpoints in `src/` and
+use `Developer: Reload Window` in the development host after rebuilding.
+
+For automatic rebuilds while editing, run:
+
+```text
+npm run watch
+```
+
+To build and install a local VSIX in your normal VS Code profile:
+
+```text
+npx --yes @vscode/vsce package --out dcs-launcher.vsix
+code --install-extension dcs-launcher.vsix --force
+```
+
+Reload existing VS Code windows after installation. The generated `dist/`,
+`out/`, and `.vsix` files are intentionally ignored by Git.
 
 ## Repository
 
