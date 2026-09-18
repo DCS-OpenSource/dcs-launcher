@@ -1,4 +1,4 @@
-## Unreleased
+## [1.4.0] - 2026-09-11
 - Added a live, searchable DCS log viewer in the editor area
 - Added multiline log entry handling, minimum severity filters, and a scripting source filter
 - Added configurable ignored log patterns with negative payload noise suppressed by default

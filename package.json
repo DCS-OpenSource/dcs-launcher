@@ -2,7 +2,7 @@
   "name": "dcs-launcher",
   "displayName": "DCS Launcher",
   "description": "Launch DCS missions directly from VS Code, skipping the menu. Ideal for rapid EFM development.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "DCS-OpenSource",
   "license": "MIT",
   "repository": {
