@@ -20,6 +20,13 @@ suite('Extension Test Suite', () => {
 		);
 	});
 
+	test('Uses the configured DCS log path when provided', () => {
+		assert.strictEqual(
+			getDcsLogPath('C:\\Users\\Pilot', 'C:\\DCS Logs\\custom.log'),
+			'C:\\DCS Logs\\custom.log'
+		);
+	});
+
 	test('Registers the open log command', async () => {
 		const extension = vscode.extensions.getExtension('DCS-OpenSource.dcs-launcher');
 		assert.ok(extension);
@@ -36,5 +43,12 @@ suite('Extension Test Suite', () => {
 		assert.deepStrictEqual(patterns?.defaultValue, [
 			'negative (drag|weight) of payload'
 		]);
+	});
+
+	test('Leaves the default log file setting empty', () => {
+		const config = vscode.workspace.getConfiguration('dcsLauncher');
+		const logFilePath = config.inspect<string>('logFilePath');
+
+		assert.strictEqual(logFilePath?.defaultValue, '');
 	});
 });

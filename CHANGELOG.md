@@ -1,3 +1,7 @@
+## [1.5.0] - 2026-09-18
+- Added a configurable DCS log file path for the live log viewer
+- Added a log viewer settings menu with path configuration above ignored pattern settings
+
 ## [1.4.0] - 2026-09-11
 - Added a live, searchable DCS log viewer in the editor area
 - Added multiline log entry handling, minimum severity filters, and a scripting source filter

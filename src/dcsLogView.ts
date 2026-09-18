@@ -8,7 +8,12 @@ const maxInitialBytes = 2 * 1024 * 1024;
 const maxLines = 20_000;
 const readChunkBytes = 256 * 1024;
 
-export function getDcsLogPath(homeDirectory?: string): string {
+export function getDcsLogPath(homeDirectory?: string, configuredLogPath?: string): string {
+    const trimmedPath = configuredLogPath?.trim();
+    if (trimmedPath) {
+        return path.normalize(trimmedPath);
+    }
+
     const home = homeDirectory ?? process.env.USERPROFILE ?? os.homedir();
     return path.join(home, "Saved Games", "DCS", "Logs", "dcs.log");
 }
@@ -22,7 +27,7 @@ export class DcsLogView implements vscode.Disposable {
     private partialLine = "";
     private decoder = new StringDecoder("utf8");
     private lastStatus?: string;
-    private readonly logPath = getDcsLogPath();
+    private logPath = this.getConfiguredLogPath();
 
     show(): void {
         if (this.panel) {
@@ -42,7 +47,7 @@ export class DcsLogView implements vscode.Disposable {
         panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case "ready":
-                    this.refreshConfiguration();
+                    this.refreshConfiguration(false);
                     void this.startFollowing();
                     break;
 
@@ -50,6 +55,13 @@ export class DcsLogView implements vscode.Disposable {
                     void vscode.commands.executeCommand(
                         "workbench.action.openSettings",
                         "@ext:DCS-OpenSource.dcs-launcher dcsLauncher.logExcludedPatterns"
+                    );
+                    break;
+
+                case "configureLogPath":
+                    void vscode.commands.executeCommand(
+                        "workbench.action.openSettings",
+                        "@ext:DCS-OpenSource.dcs-launcher dcsLauncher.logFilePath"
                     );
                     break;
             }
@@ -65,15 +77,27 @@ export class DcsLogView implements vscode.Disposable {
         this.panel?.dispose();
     }
 
-    refreshConfiguration(): void {
-        const patterns = vscode.workspace
-            .getConfiguration("dcsLauncher")
-            .get<string[]>("logExcludedPatterns") ?? [];
+    refreshConfiguration(restartIfLogPathChanged = true): void {
+        const config = vscode.workspace.getConfiguration("dcsLauncher");
+        const patterns = config.get<string[]>("logExcludedPatterns") ?? [];
+        const nextLogPath = this.getConfiguredLogPath(config);
+        const logPathChanged = nextLogPath !== this.logPath;
+
+        this.logPath = nextLogPath;
 
         void this.panel?.webview.postMessage({
             command: "configuration",
-            excludedPatterns: patterns
+            excludedPatterns: patterns,
+            logPath: this.logPath
         });
+
+        if (logPathChanged && restartIfLogPathChanged && this.panel) {
+            void this.startFollowing();
+        }
+    }
+
+    private getConfiguredLogPath(config = vscode.workspace.getConfiguration("dcsLauncher")): string {
+        return getDcsLogPath(undefined, config.get<string>("logFilePath"));
     }
 
     private async startFollowing(): Promise<void> {
@@ -277,6 +301,36 @@ export class DcsLogView implements vscode.Disposable {
                 }
                 .filters button { height: 24px; min-width: 0; padding: 1px 7px; }
                 #configureIgnored { padding-inline: 6px; }
+                .settings-group { position: relative; }
+                #settingsMenu {
+                    position: absolute;
+                    top: calc(100% + 4px);
+                    right: 0;
+                    display: none;
+                    min-width: 220px;
+                    padding: 4px 0;
+                    background: var(--vscode-menu-background);
+                    border: 1px solid var(--vscode-menu-border, var(--vscode-panel-border));
+                    box-shadow: 0 2px 8px var(--vscode-widget-shadow);
+                    z-index: 2;
+                }
+                #settingsMenu.open { display: block; }
+                #settingsMenu button {
+                    display: block;
+                    width: 100%;
+                    height: 26px;
+                    padding: 3px 10px;
+                    color: var(--vscode-menu-foreground);
+                    background: transparent;
+                    border: 0;
+                    text-align: left;
+                }
+                #settingsMenu button:hover,
+                #settingsMenu button:focus {
+                    color: var(--vscode-menu-selectionForeground);
+                    background: var(--vscode-menu-selectionBackground);
+                    outline: none;
+                }
                 #meta {
                     display: flex;
                     justify-content: space-between;
@@ -317,10 +371,14 @@ export class DcsLogView implements vscode.Disposable {
                         <button data-level="warning">Warnings+</button>
                         <button data-level="error">Errors</button>
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group settings-group">
                         <button id="scripting" title="Show only entries from scripting sources" aria-pressed="false">SCRIPTING</button>
                         <button id="hideIgnored" class="active" title="Hide entries matching configured patterns" aria-pressed="true">Hide ignored</button>
-                        <button id="configureIgnored" title="Configure ignored log patterns" aria-label="Configure ignored log patterns">&#9881;</button>
+                        <button id="configureSettings" title="Open log viewer settings" aria-label="Open log viewer settings" aria-expanded="false">&#9881;</button>
+                        <div id="settingsMenu" role="menu" aria-label="Log viewer settings">
+                            <button id="configurePath" role="menuitem">Path to log file</button>
+                            <button id="configureIgnored" role="menuitem">Ignored patterns</button>
+                        </div>
                     </div>
                 </div>
                 <div id="meta">
@@ -339,7 +397,10 @@ export class DcsLogView implements vscode.Disposable {
                 const severity = document.getElementById("severity");
                 const scriptingButton = document.getElementById("scripting");
                 const hideIgnoredButton = document.getElementById("hideIgnored");
+                const configureSettingsButton = document.getElementById("configureSettings");
+                const settingsMenu = document.getElementById("settingsMenu");
                 const configureIgnoredButton = document.getElementById("configureIgnored");
+                const configurePathButton = document.getElementById("configurePath");
                 const state = document.getElementById("state");
                 const count = document.getElementById("count");
                 const log = document.getElementById("log");
@@ -468,6 +529,12 @@ export class DcsLogView implements vscode.Disposable {
                     renderTimer = setTimeout(render, 100);
                 }
 
+                function setSettingsMenuOpen(open) {
+                    settingsMenu.classList.toggle("open", open);
+                    configureSettingsButton.classList.toggle("active", open);
+                    configureSettingsButton.setAttribute("aria-expanded", String(open));
+                }
+
                 filterInput.addEventListener("input", scheduleRender);
                 regexButton.addEventListener("click", () => {
                     useRegex = !useRegex;
@@ -502,10 +569,24 @@ export class DcsLogView implements vscode.Disposable {
                     hideIgnoredButton.setAttribute("aria-pressed", String(hideIgnored));
                     render();
                 });
+                configureSettingsButton.addEventListener("click", event => {
+                    event.stopPropagation();
+                    setSettingsMenuOpen(!settingsMenu.classList.contains("open"));
+                });
                 configureIgnoredButton.addEventListener("click", () => {
+                    setSettingsMenuOpen(false);
                     vscode.postMessage({ command: "configureExclusions" });
                 });
+                configurePathButton.addEventListener("click", () => {
+                    setSettingsMenuOpen(false);
+                    vscode.postMessage({ command: "configureLogPath" });
+                });
+                settingsMenu.addEventListener("click", event => event.stopPropagation());
+                document.addEventListener("click", () => setSettingsMenuOpen(false));
                 document.addEventListener("keydown", event => {
+                    if (event.key === "Escape") {
+                        setSettingsMenuOpen(false);
+                    }
                     if ((event.ctrlKey || event.metaKey) && event.key.toLocaleLowerCase() === "f") {
                         event.preventDefault();
                         filterInput.focus();

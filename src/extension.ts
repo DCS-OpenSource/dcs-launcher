@@ -31,7 +31,10 @@ export function activate(context: vscode.ExtensionContext) {
                 controlsProvider.refresh();
             }
 
-            if (event.affectsConfiguration("dcsLauncher.logExcludedPatterns")) {
+            if (
+                event.affectsConfiguration("dcsLauncher.logExcludedPatterns") ||
+                event.affectsConfiguration("dcsLauncher.logFilePath")
+            ) {
                 logView.refreshConfiguration();
             }
         })

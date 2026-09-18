@@ -2,7 +2,7 @@
   "name": "dcs-launcher",
   "displayName": "DCS Launcher",
   "description": "Launch DCS missions directly from VS Code, skipping the menu. Ideal for rapid EFM development.",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "publisher": "DCS-OpenSource",
   "license": "MIT",
   "repository": {
@@ -161,6 +161,12 @@
             "negative (drag|weight) of payload"
           ],
           "description": "Case-insensitive regular expressions hidden by the DCS Log viewer when Hide Ignored is enabled.",
+          "scope": "application"
+        },
+        "dcsLauncher.logFilePath": {
+          "type": "string",
+          "default": "",
+          "description": "Full path to the DCS log file. Leave empty to use Saved Games/DCS/Logs/dcs.log.",
           "scope": "application"
         }
       }

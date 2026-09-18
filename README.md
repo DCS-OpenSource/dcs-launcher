@@ -33,6 +33,7 @@ It is built for rapid DCS module development workflows where repeatedly opening 
 ### Live DCS Log
 
 - Open `Saved Games/DCS/Logs/dcs.log` in a dedicated editor tab
+- Configure a custom path to the DCS log file in VS Code Settings
 - Follow new log lines automatically
 - Filter lines using text, regular expressions, and case-sensitive matching
 
@@ -63,6 +64,16 @@ Full path to `modelviewer2.exe`.
 
 ```json
 "dcsLauncher.modelViewerExePath": "C:\\Program Files\\Eagle Dynamics\\DCS World\\bin\\modelviewer2.exe"
+```
+
+`dcsLauncher.logFilePath`
+
+Full path to the DCS log file. Leave empty to use
+`Saved Games/DCS/Logs/dcs.log`. Use the settings menu in the viewer to edit
+this in VS Code Settings.
+
+```json
+"dcsLauncher.logFilePath": "D:\\DCS.openbeta\\Logs\\dcs.log"
 ```
 
 ### Workspace Settings
